@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from dotenv import load_dotenv
 from google import genai
 
@@ -8,6 +9,7 @@ from routes import routes
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:5173"])
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)

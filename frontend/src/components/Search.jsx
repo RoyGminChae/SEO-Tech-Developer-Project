@@ -23,26 +23,75 @@ function SearchBooks(){
 
     const [selectedBooks, setSelectedBooks] = useState([]);
 
-    function searchBooks() {
-        const searchTerm = search.trim().toLowerCase()
+    const [studyPlan, setStudyPlan] = useState("")
+    const [savedMessage, setsavedMessage] = useState('')
 
-        const matchingBooks = mockBooks.filter((book) =>
-            `${book.title} ${book.author}`.toLowerCase().includes(searchTerm)
+    async function searchBooks() {
+        console.log("Search Clicked");
+        try {
+            const response = await fetch(
+                `http://localhost:8000/books?keyword=${encodeURIComponent(search)}`
+            );
+
+            const data = await response.json();
+
+            setBooks(data);
+        } catch(error) {
+            console.error(error);
+        }
+    }
+
+    function toggleBook(book) {
+        const isAlreadySelected = selectedBooks.some(
+            (selectedBook) => selectedBook.title === book.title
         )
-  setBooks(matchingBooks)
-}
 
-function toggleBook(book) {
-    const isAlreadySelected = selectedBooks.some(
-        (selectedBook) => selectedBook.id === book.id
-    )
+        if (isAlreadySelected) {
+            setSelectedBooks(
+            selectedBooks.filter((selectedBook) => selectedBook.title !== book.title)
+            );
+            } else {
+            setSelectedBooks([...selectedBooks, book])
+            }
+        }
+    
+    async function generateStudyPlan(){
+        const response = await fetch(
+            "http://localhost:8000/plans/new",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify(selectedBooks)
+            }
+        );
+        const text = await response.text();
+        setStudyPlan(text);
+    }
 
-    if (isAlreadySelected) {
-        setSelectedBooks(
-        selectedBooks.filter((selectedBook) => selectedBook.id !== book.id)
-        )
-        } else {
-        setSelectedBooks([...selectedBooks, book])
+    async function saveStudyPlan(){
+        try {
+            const response = await fetch(
+                "http://localhost:8000/plans/save",
+                {
+                    method:"POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        text: studyPlan,
+                    }),
+                }
+            );
+
+            if (!response.ok){
+                throw new Error("Failed to save study plan");
+            }
+
+            setsavedMessage("Study Plan Saved");
+        } catch(error){
+            console.error("Error saving study plan:", error);
         }
     }
 
@@ -66,18 +115,18 @@ function toggleBook(book) {
 
                 {books.map((book) => {
                     const isSelected = selectedBooks.some(
-                        (selectedBook) => selectedBook.id === book.id)
+                        (selectedBook) => selectedBook.title === book.title)
 
                 return (
                     <label className={`book-result ${isSelected ? 'selected' : ''}`}
-                key={book.id}>
+                key={`${book.title}-${book.authors[0]}`}>
                 <input  type="checkbox"
                 checked={isSelected}
                 onChange={() => toggleBook(book)}/>
 
                 <div>
                     <h4>{book.title}</h4>
-                    <p>By {book.author}</p>
+                    <p>By {book.authors.join(", ")}</p>
                 </div>
             </label>
             )
@@ -89,6 +138,36 @@ function toggleBook(book) {
                 </p>
             )}
         </div>
+        )}
+
+        <button
+        className = "primary-button"
+        onClick={generateStudyPlan}
+        disabled={selectedBooks.length === 0}>
+            Generate Study Plan
+        </button>
+
+        {studyPlan && (
+            <section className='study-plan'>
+                <h3>
+                    Your Study Plan
+                </h3>
+
+                <div className='study-plan-text'>
+                    {studyPlan.split("\n").map((line,index)=> (
+                        line.trim() !== "" && <p key={index}>{line}</p>
+                    ))}
+                </div>
+
+                <button className='primary-button'
+                onClick={saveStudyPlan}>
+                    Save study plan
+                </button>
+
+                {savedMessage && (
+                    <p className='save-message'>{savedMessage}</p>
+                )}
+            </section>
         )}
         </>
     );

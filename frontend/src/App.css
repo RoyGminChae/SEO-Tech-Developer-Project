@@ -182,3 +182,131 @@ background-size: 32px 32px;
 .selection-count {
   color: #93c5fd;
 }
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.study-plan {
+  margin-top: 28px;
+  padding: 24px;
+  border: 1px solid #38bdf8;
+  border-radius: 12px;
+  background: rgba(15, 33, 62, 0.7);
+}
+
+.study-plan h3 {
+  margin: 0;
+  color: #e0f2fe;
+}
+
+.study-plan p,
+.study-plan li {
+  color: #bfdbfe;
+}
+
+.study-plan li {
+  margin-top: 10px;
+}
+
+.study-plan-text {
+    line-height: 1.6;
+}
+
+.study-plan-text p {
+    margin-bottom: 0.75rem;
+}
+
+.save-message {
+  margin: 14px 0 0;
+  color: #86efac;
+  font-weight: 600;
+}
+
+.saved-plans-list {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.empty-plans,
+.saved-plan-card {
+  padding: 28px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+}
+
+.empty-plans {
+  text-align: center;
+}
+
+.saved-plan-card {
+  margin-top: 18px;
+}
+
+.saved-plan-card h2 {
+  margin: 6px 0;
+  color: #e0f2fe;
+}
+
+.saved-plan-card p,
+.saved-plan-card li {
+  color: #bfdbfe;
+}
+
+.saved-date {
+  color: #7dd3fc !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.plans-page {
+  padding-top: 36px;
+}
+
+.plans-page .app-header {
+  margin-bottom: 32px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 100 0 24px;
+  padding: 10px 14px;
+  border: 1px solid #38bdf8;
+  border-radius: 8px;
+  background: rgba(56, 189, 248, 0.1);
+  color: #bae6fd;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  background: rgba(56, 189, 248, 0.2);
+  color: #e0f2fe;
+  text-decoration: none;
+}
+
+.saved-plan-card {
+  padding: 32px;
+  line-height: 1.65;
+}
+
+.saved-plan-card > p {
+  margin: 14px 0;
+}
+
+.saved-plan-card ol {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0 0;
+  padding-left: 24px;
+}
+
+.saved-plan-card li {
+  padding-left: 6px;
+}
